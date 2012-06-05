@@ -13,18 +13,16 @@
   (let ((myword ""))
     (loop for c across str
        do	 
-	 (setq myword (if (upper-case-p c)
-			  (concatenate 'string myword  (format nil "_~C" (char-downcase c)))
-			  (concatenate 'string myword  (format nil "~C" c))
-			  )))
+	 (setq myword (concatenate 'string myword (if (upper-case-p c)
+					       (format nil "_~C" (char-downcase c))
+					       (format nil "~C" c)))))
     (string-left-trim "_" myword)))
-
 
 (defun application (singular)
   (let ((plural (plural-form singular)))
     (format t "~%singular: ~S, plural: ~S~%" singular plural)
-    (format t "underscorized ~S~%" (underscorize singular))
-    ))
+    (format t "underscorized sing ~S~%" (underscorize singular))
+    (format t "underscorized plur ~S~%" (underscorize plural))))
 
 (defun main (args)
   (let* ((options (cdr args))
