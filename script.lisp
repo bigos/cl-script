@@ -1,26 +1,30 @@
 #!/usr/bin/sbcl --script
 
 
-(defun run (singular-form)
-  (let ((plural-form (concatenate 'string singular-form "s")) (entered-plural))
-    (format t "singular-form: ~S~%" singular-form )
-    (format t "plural: ~S~%" plural-form)
-    (format t "enter preferred plural form or if above plural is correct just press enter: ~%")
+(defun plural-form (singular)
+  (let ((plural) 
+	(guessed-plural (concatenate 'string singular "s")) 
+	(entered-plural))        
+    (format t "if ~S is correct press Enter, ~%otherwise enter correct version~%" guessed-plural)
     (setq entered-plural (read-line ))
-    (format t "you have entered: ~S~%" entered-plural)
-    ))
+    (format t "you have entered: ~S~%" entered-plural)    
+    (setq plural (if (string= "" entered-plural) 
+		     guessed-plural
+		     entered-plural))))
 
-
-
-(defun usage ()
+(defun show-usage ()
   (format t "Enter Singular form eg. Post~%"))
 
+(defun application (singular plural)
+  (format t "~%singular: ~S, plural: ~S~%" singular plural)
+  )
+
 (defun main (args)
-  (let ((options (cdr args)))
-    (progn
-      (if (string= (car options) "--help")
-	  (usage)
-	  (run (car options))))))
+  (let* ((options (cdr args))
+	 (singular-form (car options)))
+    (if (string= (car options) "--help")
+	(show-usage)	  
+	(application singular-form (plural-form singular-form)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 (main sb-ext:*posix-argv*)
