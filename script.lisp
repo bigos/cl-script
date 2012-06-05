@@ -9,16 +9,29 @@
 	guessed-plural
 	entered-plural)))
 
-(defun application (singular plural)
-  (format t "~%singular: ~S, plural: ~S~%" singular plural)
-  )
+(defun underscorize (str)
+  (let ((myword ""))
+    (loop for c across str
+       do	 
+	 (setq myword (if (upper-case-p c)
+			  (concatenate 'string myword  (format nil "_~C" (char-downcase c)))
+			  (concatenate 'string myword  (format nil "~C" c))
+			  )))
+    (string-left-trim "_" myword)))
+
+
+(defun application (singular)
+  (let ((plural (plural-form singular)))
+    (format t "~%singular: ~S, plural: ~S~%" singular plural)
+    (format t "underscorized ~S~%" (underscorize singular))
+    ))
 
 (defun main (args)
   (let* ((options (cdr args))
 	 (singular-form (car options)))
     (if (string= (car options) "--help")
-	(format t "Enter Singular form eg. Post~%")
-	(application singular-form (plural-form singular-form)))))
+	(format t "Enter singular form eg. Post~%")
+	(application singular-form))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 (main sb-ext:*posix-argv*)
