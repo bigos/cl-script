@@ -14,15 +14,20 @@
     (loop for c across str
        do	 
 	 (setq myword (concatenate 'string myword (if (upper-case-p c)
-					       (format nil "_~C" (char-downcase c))
-					       (format nil "~C" c)))))
+						      (format nil "_~C" (char-downcase c))
+						      (format nil "~C" c)))))
     (string-left-trim "_" myword)))
+
+(defun generate (sing_camel sing_under plu_camel plu_under)
+  (format t  "generated arguments: ~S ~S ~S ~S ~%" sing_camel sing_under plu_camel plu_under))
 
 (defun application (singular)
   (let ((plural (plural-form singular)))
-    (format t "~%singular: ~S, plural: ~S~%" singular plural)
-    (format t "underscorized sing ~S~%" (underscorize singular))
-    (format t "underscorized plur ~S~%" (underscorize plural))))
+    (generate
+     singular
+     (underscorize singular)
+     plural     
+     (underscorize plural))))
 
 (defun main (args)
   (let* ((options (cdr args))
