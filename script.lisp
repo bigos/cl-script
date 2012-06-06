@@ -64,8 +64,8 @@
 (defun main (args)
   (let* ((options (cdr args))
 	 (singular-form (car options)))
-    (if (string= (car options) "--help")
-	(format t "Enter singular form eg. Post~%")
+    (if (or (string= (car options) "--help") (eq options NIL))
+	(format t "Enter singular form as an argument, eg.  $ script.lisp Post~%")
 	(application singular-form))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
