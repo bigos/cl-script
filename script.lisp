@@ -41,7 +41,11 @@
     (format t "~S    ~S~%" conds  r)
     (dolist (e methods)
       (format t "~A~%" e)
+      (setq r (concatenate 'string r (format nil "~Adef ~A" (spaces 2) (car e) )))
+      (setq r (concatenate 'string r (format nil "~%~Aend~%" (spaces 2))))
       )
+    (setq r (concatenate 'string r (format nil "end~%")))
+    (format t "~A~%" r)
     )
   )
 
