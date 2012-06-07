@@ -23,15 +23,15 @@
 
 (defun generate (sing_camel sing_under plu_camel plu_under)
   (format t  "generated arguments: ~S ~S ~S ~S ~%" sing_camel sing_under plu_camel plu_under)
-  ;;; i'm stuck with the code in the list not being avaluated
-  (let* ((methods '(("index" "all")
+;;; i'm stuck with the code in the list not being avaluated
+  (let* ((methods `(("index" "all")
 		    ("show" "find" ":id")
 		    ("new" "new")
 		    ("edit" "find" ":id")
-		    ("create" "new" (format nil "~A" sing_under)
-		     (format nil "if @~A.save" sing_under))
+		    ("create" "new" ,(format nil "~A" sing_under)
+			      ,(format nil "if @~A.save" sing_under))
 		    ("update" "find" ":id"
-		     (format nil "if @~A.update_attributes(params[:~A])" sing_under sing_under))
+			      ,(format nil "if @~A.update_attributes(params[:~A])" sing_under sing_under))
 		    ("destroy" "find" ":id")			    
 		    ))
 	 (conds (format nil "~A#~%~Aelse~%~A#~%~Aend~% " (spaces 6) (spaces 4) (spaces 6) (spaces 4) ))
