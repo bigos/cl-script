@@ -23,31 +23,35 @@
 
 (defun generate (sing_camel sing_under plu_camel plu_under)
   (format t  "generated arguments: ~S ~S ~S ~S ~%" sing_camel sing_under plu_camel plu_under)
-;;; i'm stuck with the code in the list not being avaluated
-  (let* ((methods `(("index" "all")
-		    ("show" "find" ":id")
-		    ("new" "new")
-		    ("edit" "find" ":id")
-		    ("create" "new" ,(format nil "~A" sing_under)
-			      ,(format nil "if @~A.save" sing_under))
-		    ("update" "find" ":id"
-			      ,(format nil "if @~A.update_attributes(params[:~A])" sing_under sing_under))
-		    ("destroy" "find" ":id")			    
-		    ))
-	 (conds (format nil "~A#~%~Aelse~%~A#~%~Aend~% " (spaces 6) (spaces 4) (spaces 6) (spaces 4) ))
-	 (r (format nil
-		    "~%class ~AController < ApplicationController~%~Arespond_to :html :xml~%"
-		    plu_camel (spaces 2)  )))
-    (format t "~S    ~S~%" conds  r)
-    (dolist (e methods)
-      (format t "~A~%" e)
-      (setq r (concatenate 'string r (format nil "~Adef ~A" (spaces 2) (car e) )))
-      (setq r (concatenate 'string r (format nil "~%~Aend~%" (spaces 2))))
+  (let ((methods `(("index" "all")
+		   ("show" "find" ":id")
+		   ("new" "new")
+		   ("edit" "find" ":id")
+		   ("create" "new" ,(format nil ":~A" sing_under)
+			     ,(format nil "if @~A.save" sing_under))
+		   ("update" "find" ":id"
+			     ,(format nil "if @~A.update_attributes(params[:~A])" sing_under sing_under))
+		   ("destroy" "find" ":id")))
+	(conds (format nil "#~%~Aelse~%~A#~%~Aend " (spaces 4) (spaces 6) (spaces 4) ))
+	(r (format nil
+		   "~%class ~AController < ApplicationController~%~Arespond_to :html :xml~%"
+		   plu_camel (spaces 2)))
+	(obj))    
+    (dolist (e methods)      
+      (setq r (concatenate 'string r (format nil "~Adef ~A~%" (spaces 2) (first e) )))
+      (if (string= "index" (first e))  (setq obj plu_under)  (setq obj sing_under))
+      (setq r (concatenate 'string r (format nil "~A@~A = ~A.~A" (spaces 4) obj sing_camel (second e)  )))   
+      (setq r (concatenate 'string r (if (third e) 
+					 (format nil "(params[~A])~%" (third e)) 
+					 (format nil "~%"))))
+      (if (fourth e) (setq r (concatenate 'string r (format nil "~A~A~%~A~A~%" (spaces 4) (fourth e) (spaces 6) conds ))))
+      (if (string= "destroy" (first e)) (setq r (concatenate 'string r (format nil "~A@~A.destroy~%" (spaces 4) obj ))))
+      (setq r (concatenate 'string r (format nil "~Arespond_with(@~A)~%" (spaces 4) obj)))
+      (setq r (concatenate 'string r (format nil "~Aend~%" (spaces 2))))
       )
     (setq r (concatenate 'string r (format nil "end~%")))
     (format t "~A~%" r)
-    )
-  )
+    ))
 
 ;; def generate(plu_camel,plu_under,sing_camel,sing_under)
 ;;   methods=[ ['index','all'],
@@ -67,7 +71,7 @@
 ;;     e[2] ? r << "(params[#{e[2]}])\n" : r << "\n"
 ;;     r << 4.spaces+"#{e[3]}\n"+6.spaces+conds if e[3]
 ;;     r << 4.spaces+"@#{obj}.destroy\n" if e[0]=='destroy'
-;;     r << 4.spaces+"respond_with(@#{obj})\n"
+;;           r << 4.spaces+"respond_with(@#{obj})\n"
 ;;     r << 2.spaces+"end\n"
 ;;   end
 ;;   r << "end\n"
