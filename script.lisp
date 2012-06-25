@@ -38,7 +38,7 @@
 		   ("destroy" "find" "id")))	
 	(obj)	
 	(result (with-output-to-string (r) 
-		  (format r "class ~AController < ApplicationController~%  respond_to :html :xml" plu_camel)
+		  (format r "class ~AController < ApplicationController~%  respond_to :html, :json, :xml" plu_camel)
 		  (dolist (e methods)      
 		    (format r "~2&~2Tdef ~A~%" (first e))
 		    (setq obj (if (string= "index" (first e)) plu_under sing_under))
