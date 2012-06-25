@@ -22,9 +22,9 @@
 ;;   (show    find (:id))
 ;;   (new     new  )
 ;;   (edit    find (:id))
-;;   (create  new  (:issue) (save))
-;;   (update  find (:id) (update_attributes :issue))
-;;   (destroy find (:id) (destroy))
+;;   (create  new  (:sing_under) (if save))
+;;   (update  find (:id)         (if update_attributes :sing_under))
+;;   (destroy find (:id)         (destroy))
 ;;   )
 
 (defun generate (sing_camel sing_under plu_camel plu_under)  
