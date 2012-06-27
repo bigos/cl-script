@@ -18,6 +18,13 @@
 			   (format r "~C" c))))))
     (string-left-trim "_" myword)))
 ; '((index all) (show find (id)) (new new) (edit find (id)) (create new (sing_under) (if save)) (update find (id) (if message_attrinutes sing_under)) (destroy find (id) (destroy)) )
+;; '((index all)
+;; 	   (show find (id))
+;; 	   (new new)
+;; 	   (edit find (id))
+;; 	   (create new (sing_under) (if save))
+;; 	   (update find (id) (if message_attrinutes sing_under))
+;; 	   (destroy find (id) (destroy)) )
 
 (defun generate (sing_camel sing_under plu_camel plu_under)  
   (let* ((methods `(("index" "all" )
