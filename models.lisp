@@ -7,12 +7,12 @@
 
 (defun process-line (file line)
   ;(format T "~A~%" line)
-  (if (search "ActiveRecord" line) (format T "+++++++++++++++++ ~A~%" line))
+  (if (search "ActiveRecord" line) (format T "+++ ~A~%" line))
   (if (or (search "belongs_to" line)
 	  (search "has_one" line)
 	  (search "has_many" line)
 	  (search "has_and" line))
-      (format T "*************** ~A~%" line)))
+      (format T "~A~%" line)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
