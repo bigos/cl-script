@@ -16,8 +16,10 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defvar *count* 1)
 (loop for f in *filenames* do 
-     (format T "~%~%PROCESSING... ~A~%~%" f)
+     (format T "~%~%~D  PROCESSING... ~A~%~%" *count* f)
+(setq *count* (+ 1 *count*))
 (with-open-file (stream f )
   (do ((line (read-line stream nil)
 	     (read-line stream nil)))
